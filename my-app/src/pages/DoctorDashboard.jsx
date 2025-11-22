@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { getUser, logout } from '../services/authService';
 import { useDoctorDetails } from '../hooks/useDoctorDetails';
 import '../styles/DoctorDashboard.css';
+import PatientsTable from './PatientsTable';
+import SeasonalDiseases from './seasonalDiseases';
 
 
 const DoctorDashboard = () => {
@@ -27,7 +29,7 @@ const DoctorDashboard = () => {
           <h2>Doctor Dashboard</h2>
         </div>
         <div className="navbar-user">
-          <span className="user-greeting">Welcome, {user?.username}!</span>
+          <span className="user-greeting">Welcome, Jai!</span>
           <button className="btn-logout" onClick={handleLogout}>
             Logout
           </button>
@@ -37,26 +39,14 @@ const DoctorDashboard = () => {
       <div className="dashboard-content">
         <div className="welcome-section">
           <h1>Welcome to Doctor Dashboard</h1>
-          <p>You have successfully logged in.</p>
         </div>
 
         <div className="dashboard-cards">
           <div className="card">
-            <h3>Patients</h3>
-            <p>Manage your patients</p>
-          </div>
-          <div className="card">
-            <h3>Appointments</h3>
-            <p>View and schedule appointments</p>
-          </div>
-          <div className="card">
-            <h3>Medical Records</h3>
-            <p>Access patient medical records</p>
-          </div>
-          <div className="card">
-            <h3>Reports</h3>
-            <p>Generate reports and analytics</p>
-          </div>
+            <h3>Patients List</h3>
+            <PatientsTable/>
+            <SeasonalDiseases/>
+            </div>
         </div>
       </div>
     </div>
