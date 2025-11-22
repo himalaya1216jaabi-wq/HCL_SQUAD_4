@@ -2,14 +2,38 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUser, logout } from '../services/authService';
 import '../styles/PatientDashboard.css';
+import { useState } from 'react';
 
 const PatientDashboard = () => {
   const navigate = useNavigate();
-  const user = getUser();
+   const storedUser = getUser();
+
+  // local state for edit mode 
+  const [isEditing, setIsEditing] = useState(false);
+
+  // // Local state for editable fields
+  const [user, setUser] = useState(storedUser);
+
 
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+ const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    setUser(storedUser);        // Reset values
+    setIsEditing(false);
+  };
+  const handleSubmit = () => {
+    localStorage.setItem("user", JSON.stringify(user)); // Save to storage
+    setIsEditing(false);
+    alert("Profile updated successfully!");
+  };
+const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
   };
 
   return (
@@ -20,39 +44,120 @@ const PatientDashboard = () => {
         </div>
         <div className="navbar-user">
           <span className="user-greeting">Welcome, {user?.username}!</span>
-          <button className="btn-logout" onClick={handleLogout}>
-            Logout
-          </button>
+          <button className="btn-logout" onClick={handleLogout}>Logout</button>
         </div>
       </nav>
 
       <div className="dashboard-content">
-        <div className="welcome-section">
-          <h1>Welcome to Patient Dashboard</h1>
-          <p>You have successfully logged in.</p>
-        </div>
 
-        <div className="dashboard-cards">
-          <div className="card">
-            <h3>My Appointments</h3>
-            <p>View and book appointments</p>
+        {/* EDIT BUTTON */}
+        {!isEditing && (
+          <button className="btn-edit" onClick={handleEdit}>
+            Edit Profile
+          </button>
+        )}
+
+        {/* Patient Profile */}
+        <section className="section-card">
+          <h2>Patient Profile</h2>
+
+          {/* Name */}
+          <label>Name:</label>
+          <input
+            type="text"
+            name="username"
+            value={user?.username}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+
+          {/* Email */}
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={user?.email}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+
+          {/* Gender */}
+          <label>Gender:</label>
+          <input
+            type="text"
+            name="gender"
+            value={user?.gender}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+
+          {/* DOB */}
+          <label>Date of Birth:</label>
+          <input
+            type="date"
+            name="dob"
+            value={user?.dob}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+        </section>
+
+        {/* Patient Details */}
+        <section className="section-card">
+          <h2>Patient Details</h2>
+
+          <label>Steps:</label>
+          <input
+            type="number"
+            name="steps"
+            value={user?.steps}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+
+          <label>Sleep:</label>
+          <input
+            type="text"
+            name="sleep"
+            value={user?.sleep}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+
+          <label>Preventive Reminder:</label>
+          <input
+            type="text"
+            name="reminder"
+            value={user?.reminder}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+
+          <label>Tip of the Day:</label>
+          <input
+            type="text"
+            name="tip"
+            value={user?.tip}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+        </section>
+
+        {/* SUBMIT + CANCEL SECTION */}
+        {isEditing && (
+          <div className="button-container">
+            <button className="btn-cancel" onClick={handleCancel}>
+              Cancel
+            </button>
+            <button className="btn-submit" onClick={handleSubmit}>
+              Submit
+            </button>
           </div>
-          <div className="card">
-            <h3>Health Records</h3>
-            <p>Access your medical history</p>
-          </div>
-          <div className="card">
-            <h3>Prescriptions</h3>
-            <p>View your prescriptions</p>
-          </div>
-          <div className="card">
-            <h3>Lab Reports</h3>
-            <p>Download your lab reports</p>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
 };
-
+    
+ 
 export default PatientDashboard;

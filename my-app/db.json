@@ -1,5 +1,6 @@
 {
   "users": [
+   
     {
       "id": 1,
       "username": "krishan",
@@ -11,6 +12,18 @@
       "username": "jai",
       "password": "1234",
       "role": "patient"
+    },
+    {
+      "id": 3,
+      "username": "srikar",
+      "password": "0000",
+      "role": "patient"
+    },
+    {
+      "id": 3,
+      "username": "nagaraju",
+      "password": "1111",
+      "role": "admin"
     }
   ]
 }
